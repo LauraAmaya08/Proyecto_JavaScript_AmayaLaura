@@ -1,0 +1,38 @@
+.formularioAgregarSource{
+    display: none;
+}
+
+.calificacion:not(:checked) > input {
+    position: absolute;
+    appearance: none;
+  }
+  
+  .calificacion:not(:checked) > label {
+    float: right;
+    cursor: pointer;
+    font-size: 30px;
+    fill: #666;
+  }
+  
+  .calificacion:not(:checked) > label > svg {
+    fill: #666; /* Set default color for SVG */
+    transition: fill 0.3s ease; /* Add a transition effect */
+  }
+  
+  .calificacion > input:checked + label:hover,
+  .calificacion > input:checked + label:hover ~ label,
+  .calificacion > input:checked ~ label:hover,
+  .calificacion > input:checked ~ label:hover ~ label,
+  .calificacion > label:hover ~ input:checked ~ label {
+    fill: #e58e09;
+  }
+  
+  .calificacion:not(:checked) > label:hover,
+  .calificacion:not(:checked) > label:hover ~ label {
+    fill: #ff9e0b;
+  }
+  
+  .calificacion > input:checked ~ label > svg {
+    fill: #ffa723; /* Set color for selected stars */
+  }
+  

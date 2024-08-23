@@ -85,17 +85,55 @@ const iniciarSesion = () => {
 
 const agregarSource = async () => {
     const boton = document.querySelector(".botonAdd")
-    const respuesta = await fetch("https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources")
-    if (respuesta.ok) {
-        try {
+    try {
+        const respuesta = await fetch("https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources")
+        if (respuesta.ok) {
             boton.addEventListener("click", () => {
-                let source = {}
-                let 
-            })
-        } catch (error) {
+                const formulario = document.querySelector(".formularioAgregarSource")
+                formulario.style.display = "block"
+        })
+        const guardar = document.getElementById("guardar")
+        guardar.addEventListener("click", async() =>{
+            const nombre = document.getElementById("nombreRecurso").value
+            const genero = Array.from(document.getElementById("generoRecurso").selectedOptions).map(option => option.value)
+            const plataforma = document.getElementById("plataformaRecurso").value
+            const estado = document.getElementById("estadoRecurso").value
+            const formato = document.getElementById("formatoRecurso").value
+            const fecha = document.getElementById("fechaRecurso").value
+            const calificacion = document.querySelector("input[name='rate']:checked")?.value|| 0
+            const resena = document.getElementById("resena").value
+            console.log(calificacion)
 
-        }
+            if(!nombre || genero.length == 0 || plataforma.length == 0 || estado.length == 0 || formato.length == 0 || !fecha || !resena){
+                alert("Llena todos los campos")
+            }
+            else{
+                let source = {}
+                source.nombre = nombre
+                source.genero = genero
+                source.plataforma = plataforma
+                source.estado = estado
+                source.formato = formato
+                source.fecha = fecha
+                source.calificacion = calificacion
+                source.resena = resena
+                console.log(source)
+
+                const respuestaAgregar = await fetch("https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+            })
+            if (respuestaAgregar.ok){
+                console.log(respuestaAgregar.json())
+            }
+
+        }})
     } else {
         console.error("Error accediendo a la base de datos")
+    }
+    } catch (error) {
+        
     }
 }
