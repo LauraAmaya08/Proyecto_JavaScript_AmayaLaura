@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
         registrarUsuario()
     } else if (document.location.pathname.includes("iniciarsesion")) {
         iniciarSesion()
-    }
+    } else if (document.location.pathname.includes("inicio"))
+    agregarSource()
 })
 
 const registrarUsuario = () => {
@@ -22,7 +23,8 @@ const registrarUsuario = () => {
                     const nuevoUsuario = {
                         email: email,
                         nombre: nombre,
-                        password: password
+                        password: password,
+                        sources: []
                     }
                     const respuestaRegistro = await fetch("https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources", {
                         method: "POST",
@@ -32,7 +34,7 @@ const registrarUsuario = () => {
                         body: JSON.stringify(nuevoUsuario)
                     });
 
-                    if (respuestaRegistro.ok){
+                    if (respuestaRegistro.ok) {
                         alert("Usuario agregado exitosamente")
                     } else {
                         alert("problema agregando el usuario")
@@ -61,15 +63,15 @@ const iniciarSesion = () => {
             if (respuesta.ok) {
                 let usuario = usuarios.find(usuario => usuario.email === email)
                 if (usuario) {
-                    if(usuario.password !== password){
+                    if (usuario.password !== password) {
                         alert("contraseña incorrecta")
-                    } else{
+                    } else {
                         alert("Hola de nuevo " + usuario.nombre)
                         window.location.href = "inicio.html"
                     }
-                    
+
                 } else {
-                   alert("usuario no encontrado")
+                    alert("usuario no encontrado")
                 }
             } else {
                 throw new Error("Error al acceder a la base de datos")
@@ -79,4 +81,21 @@ const iniciarSesion = () => {
         }
 
     })
+}
+
+const agregarSource = async () => {
+    const boton = document.querySelector(".botonAdd")
+    const respuesta = await fetch("https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources")
+    if (respuesta.ok) {
+        try {
+            boton.addEventListener("click", () => {
+                let source = {}
+                let 
+            })
+        } catch (error) {
+
+        }
+    } else {
+        console.error("Error accediendo a la base de datos")
+    }
 }
