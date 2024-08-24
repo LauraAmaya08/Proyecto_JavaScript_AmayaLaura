@@ -67,6 +67,7 @@ const iniciarSesion = () => {
                         alert("contraseña incorrecta")
                     } else {
                         alert("Hola de nuevo " + usuario.nombre)
+                        localStorage.setItem("UsuarioId",usuario.id)
                         window.location.href = "inicio.html"
                     }
 
@@ -85,6 +86,9 @@ const iniciarSesion = () => {
 
 const agregarSource = async () => {
     const boton = document.querySelector(".botonAdd")
+    const user = localStorage.getItem("UsuarioId")
+    console.log(user)
+
     try {
         const respuesta = await fetch("https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources")
         if (respuesta.ok) {
@@ -92,6 +96,7 @@ const agregarSource = async () => {
                 const formulario = document.querySelector(".formularioAgregarSource")
                 formulario.style.display = "block"
         })
+
         const guardar = document.getElementById("guardar")
         guardar.addEventListener("click", async() =>{
             const nombre = document.getElementById("nombreRecurso").value
@@ -106,6 +111,7 @@ const agregarSource = async () => {
 
             if(!nombre || genero.length == 0 || plataforma.length == 0 || estado.length == 0 || formato.length == 0 || !fecha || !resena){
                 alert("Llena todos los campos")
+                return
             }
             else{
                 let source = {}
@@ -119,21 +125,30 @@ const agregarSource = async () => {
                 source.resena = resena
                 console.log(source)
 
-                const respuestaAgregar = await fetch("https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources", {
-                    method: "POST",
+                const obtenerUsuario = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${user}`)
+                if (!obtenerUsuario.ok) {
+                    throw new Error("Error accediendo al usuario");
+                }
+                const usuario = await obtenerUsuario.json();
+                console.log(usuario)
+                usuario.sources.push(source)
+                
+                const cargaRecurso  = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${user}`, {
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json"
                     },
-            })
-            if (respuestaAgregar.ok){
-                console.log(respuestaAgregar.json())
-            }
+                    body: JSON.stringify(usuario)
+                });
+                if (!cargaRecurso.ok) {
+                    throw new Error("Error al cargar el recurso");
+                }
 
         }})
     } else {
         console.error("Error accediendo a la base de datos")
     }
     } catch (error) {
-        
+        console.error("Error:", error.message);
     }
 }
