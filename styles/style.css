@@ -72,7 +72,8 @@ header{
 }
 
 .logIn,
-.signUp{
+.signUp,
+.boton{
   padding: 10px;
   border-radius: 16px;
   font-size: 1em;
@@ -90,13 +91,85 @@ header{
 }
 
 .logIn:hover,
-.signUp:hover{
+.signUp:hover,
+.boton:hover{
   scale: 1.1;
   background-color: red;
+  cursor: pointer;
+}
 
+/*Inicio sesión, registro*/
+.parrafo{
+  color: #fff;
+  text-align: center;
+  padding-top: 10%;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1.4em;
+  animation: fadeInTop 2s ease forwards;
+}
+
+#iniciarForm,
+#registroForm{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-top: 2%; /*responsive*/
+  animation: fadeInTop 2s ease forwards;
+}
+
+.iniciarCampo,
+.registroCampo{
+  display: flex;
+  flex-direction: column-reverse;
+  color: #fff;
+  align-items: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  gap: 10px;
+}
+
+.iniciarCampo label,
+.registroCampo label{
+  color: red;
+  font-weight: bold;
+}
+
+.iniciarCampo input,
+.registroCampo input{
+  border: 1px solid #fff;
+  border-radius: 16px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  font-size: 1.em;
+  color: #fff;
+}
+
+.atras{
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  margin: 4%;
+  display: block;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  animation: fadeInTop 2s ease forwards;
+  font-size: 1.1em;
 }
 
 
+/*inicio*/
+
+body{
+  background-color: #161616;
+}
+
+#saludo{
+  color: #fff;
+  text-align:start;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1.4em;
+  animation: fadeInTop 2s ease forwards;
+}
 .formularioAgregarSource{
     display: none;
 }

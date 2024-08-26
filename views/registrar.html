@@ -4,12 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Progresso</title>
+    <link rel="stylesheet" href="../styles/style.css">
 </head>
 <body>
     <header>
         <img src="../Images/Diseño sin título.png" alt="Nuestro Logo" width="200px">
     </header>
-    <p class="parrafo">¡Maximiza tu experiencia de entretenimiento! Regístrate en Progresso y mantén un seguimiento perfecto de lo que ves y lees.</p>
+    <div class="container-fondo">
+        <img
+        class="background"
+        src="../Images/movies.webp"
+    >
+    </div>
+    <p class="parrafo">¡Maximiza tu experiencia de entretenimiento! Regístrate y mantén un seguimiento perfecto de lo que ves y lees.</p>
     <form id="registroForm">
         <div class="registroCampo">
             <input type="text" name="nombre" id="usuarioNombre" required placeholder="Ingresa un nombre de usuario">
@@ -25,7 +32,7 @@
         </div>
         <button type="submit" class="boton">Registrar</button>
     </form>
-    <a href="index.html">Volver al inicio</a>
+    <a href="index.html" class="atras"><img src="../assets/inicio.svg" alt="icono">Volver al inicio</a>
     <script src="../JS/main.js"></script>
 </body>
 </html>

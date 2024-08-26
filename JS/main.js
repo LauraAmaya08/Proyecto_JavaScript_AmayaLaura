@@ -120,6 +120,9 @@ const agregarSource = async () => {
             if(!nombre || genero.length == 0 || plataforma.length == 0 || estado.length == 0 || formato.length == 0 || !fecha || !resena){
                 alert("Llena todos los campos")
                 return
+            } else if (estado !== "Terminado" && fecha) {
+                alert("No puedes ingresar una fecha si el estado no es 'Terminado'");
+                return;
             }
             else{
                 let source = {}
