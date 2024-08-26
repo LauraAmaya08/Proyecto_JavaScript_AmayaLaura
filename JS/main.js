@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
         iniciarSesion()
     } else if (document.location.pathname.includes("inicio"))
     agregarSource()
+    cargarSaludo()
+    cargarSources()
 })
 
 const registrarUsuario = () => {
@@ -66,8 +68,8 @@ const iniciarSesion = () => {
                     if (usuario.password !== password) {
                         alert("contraseña incorrecta")
                     } else {
-                        alert("Hola de nuevo " + usuario.nombre)
                         localStorage.setItem("UsuarioId",usuario.id)
+                        localStorage.setItem("nombreUser", usuario.nombre)
                         window.location.href = "inicio.html"
                     }
 
@@ -82,6 +84,11 @@ const iniciarSesion = () => {
         }
 
     })
+}
+
+const cargarSaludo = () => {
+    const nombre = localStorage.getItem("nombreUser")
+    document.getElementById("nombre").textContent = `¡Bienvenido de nuevo ${nombre}!`
 }
 
 const agregarSource = async () => {
@@ -107,6 +114,7 @@ const agregarSource = async () => {
             const fecha = document.getElementById("fechaRecurso").value
             const calificacion = document.querySelector("input[name='rate']:checked")?.value|| 0
             const resena = document.getElementById("resena").value
+            const id = 1
             console.log(calificacion)
 
             if(!nombre || genero.length == 0 || plataforma.length == 0 || estado.length == 0 || formato.length == 0 || !fecha || !resena){
@@ -123,7 +131,10 @@ const agregarSource = async () => {
                 source.fecha = fecha
                 source.calificacion = calificacion
                 source.resena = resena
+                source.id = id
                 console.log(source)
+                id++
+
 
                 const obtenerUsuario = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${user}`)
                 if (!obtenerUsuario.ok) {
@@ -143,12 +154,42 @@ const agregarSource = async () => {
                 if (!cargaRecurso.ok) {
                     throw new Error("Error al cargar el recurso");
                 }
-
+                cargarSources()
         }})
     } else {
         console.error("Error accediendo a la base de datos")
     }
     } catch (error) {
         console.error("Error:", error.message);
+    }
+}
+
+const cargarSources = async () =>{
+    const user = localStorage.getItem("UsuarioId")
+    const data = await fetch (`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${user}`)
+    try {
+        userInfo = await data.json()
+        sourcesUser = userInfo.sources
+        const recursos = document.querySelector(".recursos")
+        recursos.innerHTML = '';
+        console.log(sourcesUser)
+        sourcesUser.forEach(source => {
+            const generos = source.genero.join(" ,");
+            const info = `<li>
+            <h2 id = "nombre">${source.nombre}</h2>
+            <p id = "genero">Géneros: ${generos}</p>
+            <p id = "plataforma">Plataforma: ${source.plataforma}</p>
+            <p id = "estado">Estado: ${source.estado}</p>
+            <p id = "formato">Formato: ${source.formato}</p>
+            <p id = "fecha">Finalización: ${source.fecha}</p>
+            <p id = "calificacion">Calificación: ${source.calificacion} estrellas</p>
+            <p id = "resena">${source.resena}</p>
+            <button id = "eliminar"><img src= "../assets/eliminar.svg" alt= "eliminar"></button>
+            <button id = "actualizar"><img src= "../assets/actualizar.svg" alt= "actualizar"></button>
+            </li>`
+            recursos.innerHTML+= info
+        });
+    } catch (error) {
+        console.error(error)
     }
 }
