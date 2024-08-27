@@ -95,16 +95,19 @@ const agregarSource = async () => {
     const boton = document.querySelector(".botonAdd")
     const user = localStorage.getItem("UsuarioId")
     console.log(user)
+    const oscurecer = document.querySelector(".oscurecer")
 
     try {
         const respuesta = await fetch("https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources")
         if (respuesta.ok) {
             boton.addEventListener("click", () => {
-                const formulario = document.querySelector(".formularioAgregarSource")
+                var formulario = document.querySelector(".formularioAgregarSource")
                 formulario.style.display = "block"
+                oscurecer.classList.add("activo")
         })
 
         const guardar = document.getElementById("guardar")
+        const quitar = document.getElementById("cancelar")
         guardar.addEventListener("click", async() =>{
             const nombre = document.getElementById("nombreRecurso").value
             const genero = Array.from(document.getElementById("generoRecurso").selectedOptions).map(option => option.value)
@@ -114,14 +117,17 @@ const agregarSource = async () => {
             const fecha = document.getElementById("fechaRecurso").value
             const calificacion = document.querySelector("input[name='rate']:checked")?.value|| 0
             const resena = document.getElementById("resena").value
-            const id = 1
+            let id = 1
             console.log(calificacion)
+            console.log(estado)
 
-            if(!nombre || genero.length == 0 || plataforma.length == 0 || estado.length == 0 || formato.length == 0 || !fecha || !resena){
+            if(!nombre || genero.length == 0 || plataforma.length == 0 || estado.length == 0 || formato.length == 0 || !resena){
                 alert("Llena todos los campos")
                 return
-            } else if (estado !== "Terminado" && fecha) {
+            } else if (estado !== "Terminado") {
                 alert("No puedes ingresar una fecha si el estado no es 'Terminado'");
+                document.getElementById('fechaRecurso').value = ''
+                document.getElementById('estadoRecurso').value = ''
                 return;
             }
             else{
@@ -158,6 +164,7 @@ const agregarSource = async () => {
                     throw new Error("Error al cargar el recurso");
                 }
                 cargarSources()
+                formulario.style.display = "none"
         }})
     } else {
         console.error("Error accediendo a la base de datos")
@@ -178,17 +185,19 @@ const cargarSources = async () =>{
         console.log(sourcesUser)
         sourcesUser.forEach(source => {
             const generos = source.genero.join(" ,");
-            const info = `<li>
-            <h2 id = "nombre">${source.nombre}</h2>
-            <p id = "genero">Géneros: ${generos}</p>
-            <p id = "plataforma">Plataforma: ${source.plataforma}</p>
-            <p id = "estado">Estado: ${source.estado}</p>
-            <p id = "formato">Formato: ${source.formato}</p>
-            <p id = "fecha">Finalización: ${source.fecha}</p>
-            <p id = "calificacion">Calificación: ${source.calificacion} estrellas</p>
-            <p id = "resena">${source.resena}</p>
+            const info = `<li class= "recurso">
+            <h2 id = "nombreSource">${source.nombre}</h2>
+            <p id = "genero"><span>Géneros: </span>${generos}</p>
+            <p id = "plataforma"><span>Plataforma: </span>${source.plataforma}</p>
+            <p id = "estado"><span>Estado: </span>${source.estado}</p>
+            <p id = "formato"><span>Formato: </span>${source.formato}</p>
+            <p id = "fecha"><span>Finalización: </span>${source.fecha}</p>
+            <p id = "calificacion"><span>Calificación: </span>${source.calificacion} estrellas</p>
+            <p id = "resena"><span>Reseña: </span>${source.resena}</p>
+            <div class="btn">
             <button id = "eliminar"><img src= "../assets/eliminar.svg" alt= "eliminar"></button>
             <button id = "actualizar"><img src= "../assets/actualizar.svg" alt= "actualizar"></button>
+            </div>
             </li>`
             recursos.innerHTML+= info
         });
