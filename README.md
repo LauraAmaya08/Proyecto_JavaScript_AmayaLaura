@@ -6,7 +6,7 @@
 
 
 <p>¡Bienvenido a Progresso, tu compañero definitivo para gestionar tu entretenimiento! 🎬 📚 Si alguna vez has deseado tener todo el control sobre tus libros, películas y series favoritos en un solo lugar, ¡esta aplicación es para ti!  
-**Progresso** es una aplicación web diseñada para ofrecerte una experiencia interactiva, permitiéndote actualizar, añadir, eliminar y explorar fácilmente tus recursos de entretenimiento, todo en un solo click. ¡Mantén todo al día y disfruta al máximo de tu contenido favorito!</p>
+Progresso es una aplicación web diseñada para ofrecerte una experiencia interactiva, permitiéndote actualizar, añadir, eliminar y explorar fácilmente tus recursos de entretenimiento, todo en un solo click. ¡Mantén todo al día y disfruta al máximo de tu contenido favorito!</p>
 
 ## Tabla de Contenidos
 - [Características Principales](#características)
