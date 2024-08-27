@@ -7,7 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
     agregarSource()
     cargarSaludo()
     cargarSources()
+    eliminarSource()
 })
+
+const generarIdUnicoSources = () => {
+    return Date.now().toString();
+};
 
 const registrarUsuario = () => {
     document.getElementById("registroForm").addEventListener("submit", async function (evento) {
@@ -91,23 +96,41 @@ const cargarSaludo = () => {
     document.getElementById("nombre").textContent = `¡Bienvenido de nuevo ${nombre}!`
 }
 
+const limpiarFormulario = () => {
+    document.getElementById("nombreRecurso").value = "";
+    document.getElementById("generoRecurso").selectedIndex = 0; 
+    document.getElementById("plataformaRecurso").value = "";
+    document.getElementById("estadoRecurso").value = "";
+    document.getElementById("formatoRecurso").value = "";
+    document.getElementById("fechaRecurso").value = "";
+    const radios = document.querySelectorAll("input[name='rate']");
+    radios.forEach(radio => radio.checked = false);
+    document.getElementById("resena").value = "";
+};
+
+const FechaMaxima = () => {
+    const fechaInput = document.getElementById("fechaRecurso");
+    const hoy = new Date().toISOString().split('T')[0];
+    fechaInput.setAttribute("max", hoy);
+}
+
 const agregarSource = async () => {
     const boton = document.querySelector(".botonAdd")
     const user = localStorage.getItem("UsuarioId")
-    console.log(user)
     const oscurecer = document.querySelector(".oscurecer")
-
+    const formulario = document.querySelector(".formularioAgregarSource")
+    const quitar = document.getElementById("cancelar")
+    FechaMaxima()
     try {
         const respuesta = await fetch("https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources")
         if (respuesta.ok) {
             boton.addEventListener("click", () => {
-                var formulario = document.querySelector(".formularioAgregarSource")
                 formulario.style.display = "block"
+                formulario.classList.remove("oculto")
                 oscurecer.classList.add("activo")
         })
 
         const guardar = document.getElementById("guardar")
-        const quitar = document.getElementById("cancelar")
         guardar.addEventListener("click", async() =>{
             const nombre = document.getElementById("nombreRecurso").value
             const genero = Array.from(document.getElementById("generoRecurso").selectedOptions).map(option => option.value)
@@ -117,14 +140,13 @@ const agregarSource = async () => {
             const fecha = document.getElementById("fechaRecurso").value
             const calificacion = document.querySelector("input[name='rate']:checked")?.value|| 0
             const resena = document.getElementById("resena").value
-            let id = 1
             console.log(calificacion)
             console.log(estado)
 
             if(!nombre || genero.length == 0 || plataforma.length == 0 || estado.length == 0 || formato.length == 0 || !resena){
                 alert("Llena todos los campos")
                 return
-            } else if (estado !== "Terminado") {
+            } else if (estado !== "Terminado" && fecha) {
                 alert("No puedes ingresar una fecha si el estado no es 'Terminado'");
                 document.getElementById('fechaRecurso').value = ''
                 document.getElementById('estadoRecurso').value = ''
@@ -140,9 +162,8 @@ const agregarSource = async () => {
                 source.fecha = fecha
                 source.calificacion = calificacion
                 source.resena = resena
-                source.id = id
+                source.id = generarIdUnicoSources()
                 console.log(source)
-                id++
 
 
                 const obtenerUsuario = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${user}`)
@@ -163,9 +184,26 @@ const agregarSource = async () => {
                 if (!cargaRecurso.ok) {
                     throw new Error("Error al cargar el recurso");
                 }
+                let idsRecursos = JSON.parse(localStorage.getItem("idsRecursos")) || [];
+                idsRecursos.push(source.id);
+                localStorage.setItem("idsRecursos", JSON.stringify(idsRecursos));
+                limpiarFormulario()
+                formulario.classList.add("oculto");
+                oscurecer.classList.remove("activo");
+
+                setTimeout(() => {
+                    formulario.style.display = "none";
+                }, 500)
                 cargarSources()
-                formulario.style.display = "none"
         }})
+        quitar.addEventListener("click",()=>{
+            limpiarFormulario()
+            formulario.classList.add("oculto");
+            oscurecer.classList.remove("activo");
+            setTimeout(() => {
+                formulario.style.display = "none";
+            }, 500)
+        })
     } else {
         console.error("Error accediendo a la base de datos")
     }
@@ -204,4 +242,16 @@ const cargarSources = async () =>{
     } catch (error) {
         console.error(error)
     }
+}
+
+
+const eliminarSource = async() =>{
+    await cargarSources()
+    const botonesEliminar = document.querySelectorAll("#eliminar")
+    botonesEliminar.forEach(boton => {
+            boton.addEventListener("click",()=>{
+        alert("hola")
+    })
+    });
+
 }
