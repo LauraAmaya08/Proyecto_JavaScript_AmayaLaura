@@ -223,7 +223,7 @@ const cargarSources = async () =>{
         console.log(sourcesUser)
         sourcesUser.forEach(source => {
             const generos = source.genero.join(" ,");
-            const info = `<li class= "recurso">
+            const info = `<li class= "recurso" data-id="${source.id}">
             <h2 id = "nombreSource">${source.nombre}</h2>
             <p id = "genero"><span>Géneros: </span>${generos}</p>
             <p id = "plataforma"><span>Plataforma: </span>${source.plataforma}</p>
@@ -233,25 +233,61 @@ const cargarSources = async () =>{
             <p id = "calificacion"><span>Calificación: </span>${source.calificacion} estrellas</p>
             <p id = "resena"><span>Reseña: </span>${source.resena}</p>
             <div class="btn">
-            <button id = "eliminar"><img src= "../assets/eliminar.svg" alt= "eliminar"></button>
+            <button class = "eliminar" data-id="${source.id}"><img src= "../assets/eliminar.svg" alt= "eliminar"></button>
             <button id = "actualizar"><img src= "../assets/actualizar.svg" alt= "actualizar"></button>
             </div>
             </li>`
             recursos.innerHTML+= info
         });
+        eliminarSource()
     } catch (error) {
         console.error(error)
     }
 }
 
+const eliminarSource = async () => {
+    const usuarioId = localStorage.getItem("UsuarioId");
+    
+    try {
+        const botonesBorrar = document.querySelectorAll(".eliminar");
 
-const eliminarSource = async() =>{
-    await cargarSources()
-    const botonesEliminar = document.querySelectorAll("#eliminar")
-    botonesEliminar.forEach(boton => {
-            boton.addEventListener("click",()=>{
-        alert("hola")
-    })
-    });
+        botonesBorrar.forEach(boton => {
+            boton.addEventListener("click", async (event) => {
+                event.preventDefault();
+                
+                const idRecurso = event.target.closest("button").getAttribute("data-id");
+                console.log("ID del recurso a eliminar:", idRecurso);
+                
+                try {
+                    const obtenerUsuario = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${usuarioId}`);
+                    if (!obtenerUsuario.ok) {
+                        throw new Error("Error al obtener el usuario");
+                    }
+                    const usuario = await obtenerUsuario.json();
+                    
+                    const fuentesActualizadas = usuario.sources.filter(source => source.id !== idRecurso);
+                    
+                    const respuesta = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${usuarioId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            ...usuario,
+                            sources: fuentesActualizadas
+                        })
+                    });
 
-}
+                    if (!respuesta.ok) {
+                        throw new Error("Error al actualizar el recurso");
+                    }
+                    await cargarSources();
+                } catch (error) {
+                    console.error("Error al eliminar el recurso:", error.message);
+                }
+            });
+        });
+    } catch (error) {
+        console.error("Error en eliminarSource:", error.message);
+    }
+};
