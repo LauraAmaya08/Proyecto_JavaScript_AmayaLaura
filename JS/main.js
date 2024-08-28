@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarSources()
     eliminarSource()
     buscador()
+    filtros()
 })
 
 const generarIdUnicoSources = () => {
@@ -430,7 +431,7 @@ const mostrarResultados = (resultados) => {
     
         resultados.forEach(async recurso => {
             const item = document.createElement('div');
-            item.className = 'recurso'; // Agrega una clase para aplicar estilos si es necesario
+            item.className = 'recurso'; 
             item.innerHTML = `
                 <h2 id = "nombreSource">${recurso.nombre}</h2>
                 <p id = "genero"><span>Géneros: </span>${recurso.genero}</p>
@@ -460,4 +461,51 @@ const mostrarResultados = (resultados) => {
             });
 }
 
+const filtros = async () => {
+    const usuarioId = localStorage.getItem("UsuarioId");
+    const estadoFiltro = document.getElementById('estadoFiltro');
+    const formatoFiltro = document.getElementById('formatoFiltro');
+    const plataformaFiltro = document.getElementById('plataformaFiltro');
+    const botonFiltrar = document.getElementById("aplicarFiltros");
+    const botonRestablecer = document.getElementById("restablecerFiltros");
 
+    let recursos = [];
+
+    try {
+        const obtenerUsuario = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${usuarioId}`);
+        if (!obtenerUsuario.ok) throw new Error('Error en la búsqueda');
+        const data = await obtenerUsuario.json();
+        recursos = data.sources;
+    } catch (error) {
+        console.error(error);
+    }
+
+    const aplicarFiltros = () => {
+        const estadoSeleccionado = estadoFiltro.value;
+        const formatoSeleccionado = formatoFiltro.value;
+        const plataformaSeleccionada = plataformaFiltro.value;
+
+        const resultadosFiltrados = recursos.filter(recurso => {
+            return (estadoSeleccionado === '' || recurso.estado === estadoSeleccionado) &&
+                   (formatoSeleccionado === '' || recurso.formato === formatoSeleccionado) &&
+                   (plataformaSeleccionada === '' || recurso.plataforma === plataformaSeleccionada);
+        });
+
+        mostrarResultados(resultadosFiltrados);
+    };
+
+    const restablecerFiltros = () => {
+        // Restablecer los valores de los filtros
+        estadoFiltro.value = '';
+        formatoFiltro.value = '';
+        plataformaFiltro.value = '';
+
+        // Mostrar todos los resultados
+        mostrarResultados(recursos);
+    };
+
+    botonFiltrar.addEventListener('click', aplicarFiltros);
+    botonRestablecer.addEventListener('click', restablecerFiltros);
+
+    mostrarResultados(recursos);
+};

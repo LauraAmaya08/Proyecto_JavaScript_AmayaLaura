@@ -36,6 +36,43 @@
         <button class="buscar"><img src="../assets/buscar.svg" alt="Search.."></button>
       </nav>
     </section>
+    <section class="filtros">
+      <div class="filtro">
+          <label for="estadoFiltro">Estado:</label>
+          <select id="estadoFiltro">
+              <option value="">Todos</option>
+              <option value="Terminado">Terminado</option>
+              <option value="Progreso">En Progreso</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="Pausado">En Pausa</option>
+              <option value="En espera">En Espera</option>
+          </select>
+      </div>
+      <div class="filtro">
+          <label for="formatoFiltro">Formato:</label>
+          <select id="formatoFiltro">
+              <option value="">Todos</option>
+              <option value="Libro">Libro</option>
+              <option value="Película">Película</option>
+              <option value="Serie">Serie de TV</option>
+          </select>
+      </div>
+      <div class="filtro">
+          <label for="plataformaFiltro">Plataforma:</label>
+          <select id="plataformaFiltro">
+              <option value="">Todas</option>
+              <option value="Netflix">Netflix</option>
+              <option value="Disney+">Disney+</option>
+              <option value="Amazon">Amazon</option>
+              <option value="HBO max">HBO max</option>
+              <option value="Crunchyroll">Crunchyroll</option>
+              <option value="Wattpad">Wattpad</option>
+              <option value="Google Libros">Google Play Libros</option>
+          </select>
+      </div>
+      <button id="aplicarFiltros">Aplicar Filtros</button>
+      <button id="restablecerFiltros">Restablecer Filtros</button>
+  </section>
     <h1 class="tusRecursos">Tus Recursos</h1>
 
     <section class="formularioAgregarSource">
