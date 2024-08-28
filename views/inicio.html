@@ -13,6 +13,13 @@
         alt="Nuestro Logo"
         width="200px"
       />
+      <nav>
+      <a href="index.html" class="atrasInicio"><img src="../assets/inicio.svg" alt="icono">Volver al inicio</a>
+        <div class="form-group">
+        <input type="text" id="searchField" name="query" placeholder="Introduce el término de búsqueda" required>
+        </div>
+        <button class="buscar"><img src="../assets/buscar.svg" alt="Search.."></button>
+      </nav>
     </header>
     <div id="saludo">
       <span id="nombre"></span>
@@ -24,19 +31,12 @@
         elementos y personalizar tu experiencia. ¡Fácil y divertido!
       </p>
     </section>
-    <section class="opcContainer">
       <button class="botonAdd">
         <img src="../assets/agregar.svg" alt="Agregar " />Recurso
       </button>
-      <a href="index.html" class="atrasInicio"><img src="../assets/inicio.svg" alt="icono">Volver al inicio</a>
-      <nav>
-        <div class="form-group">
-        <input type="text" id="searchField" name="query" placeholder="Introduce el término de búsqueda" required>
-        </div>
-        <button class="buscar"><img src="../assets/buscar.svg" alt="Search.."></button>
-      </nav>
-    </section>
-    <section class="filtros">
+    <h1 class="tusRecursos">Tus Recursos</h1>
+    <section class="filtros-container">
+      <section class="filtros">
       <div class="filtro">
           <label for="estadoFiltro">Estado:</label>
           <select id="estadoFiltro">
@@ -70,11 +70,13 @@
               <option value="Google Libros">Google Play Libros</option>
           </select>
       </div>
+    </section>
+    <div class="botonesFiltros">
       <button id="aplicarFiltros">Aplicar Filtros</button>
       <button id="restablecerFiltros">Restablecer Filtros</button>
+    </div>
+      
   </section>
-    <h1 class="tusRecursos">Tus Recursos</h1>
-
     <section class="formularioAgregarSource">
       <h1 class="tituloForm">¡Hora de agregar!</h1>
       <form id="agregarCampos">

@@ -105,9 +105,10 @@ header{
 .botonAdd:hover,
 #guardar:hover,
 #cancelar:hover,
-.atrasInicio:hover,
 #cancelarActual:hover,
-#guardarActual:hover{
+#guardarActual:hover,
+#aplicarFiltros:hover,
+#restablecerFiltros:hover{
   scale: 1.1;
   background-color: red;
   cursor: pointer;
@@ -186,6 +187,7 @@ body{
   animation: fadeInTop 2s ease forwards;
   padding: 1%;
   padding-left: 3%;
+  margin-top: 3%;
 }
 
 .introduccion{
@@ -197,8 +199,7 @@ body{
   padding-left: 3%;
 }
 
-.botonAdd,
-#searchField{
+.botonAdd{
   margin-left: 3%;
   margin-top: 1%;
   padding: 10px;
@@ -213,7 +214,65 @@ body{
   animation: fadeInTop 2s ease forwards;
 }
 
+#estadoFiltro,
+#formatoFiltro,
+#plataformaFiltro
+{
+  margin-left: 3%;
+  margin-top: 1%;
+  padding: 10px;
+  border-radius: 16px;
+  font-size: 0.9em;
+  border: 1px solid white;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.filtro{
+  display: flex;
+  align-items: center;
+}
+
+.filtros{
+  display: flex;
+  justify-content:flex-end;
+  color: #fff;
+  gap: 20px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 0.9em;
+  margin: 2%;
+  margin-bottom: 10px;
+  animation: fadeInTop 2s ease forwards;
+  width: 90%;
+}
+
+.botonesFiltros{
+  display: flex;
+  margin-right: 2%;
+  justify-content: flex-end;
+  gap: 20px;
+  width: 93%;
+}
+
+
 .atrasInicio{
+  margin-left: 3%;
+  margin-top: 1%;
+  padding: 10px;
+  font-size: 0.9em;
+  border: none;
+  background-color: transparent;
+  color: white;
+  display: flex;
+  max-width: 150px;
+  gap: 5px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-decoration: none;
+}
+#searchField{
   margin-left: 3%;
   margin-top: 1%;
   padding: 10px;
@@ -226,7 +285,6 @@ body{
   align-items: center;
   max-width: 150px;
   gap: 5px;
-  animation: fadeInTop 2s ease forwards;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   text-decoration: none;
 }
@@ -278,11 +336,21 @@ body{
 }
 
 nav{
+  position: absolute;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   flex-direction: row;
+  right: 5%;
 }
+
+.advertencia{
+  color: white;
+  text-align: center;
+  padding: 15px;
+}
+
+
 
 /*formulario*/
 
@@ -293,7 +361,7 @@ nav{
   width: 50%;
   left: 25%;
   right: 25%;
-  transform: translate(-50%, -50%); 
+  top: 20%;
   background-color: #161616; 
   border: 1px solid #ccc; 
   border-radius: 8px; 
@@ -415,6 +483,24 @@ textarea {
     color: white
   }
 
+  #aplicarFiltros,
+  #restablecerFiltros{
+    background-color: transparent;
+    animation: fadeInTop 2s ease forwards;
+    color: white;
+    border: 1px solid white;
+    padding: 8px;
+    border-radius: 16px;
+    margin-bottom:3% ;
+  }
+
+.respuesta{
+  color: white;
+  text-align: center;
+  width: 100vw;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 
   /*elementos*/
 
@@ -471,7 +557,7 @@ textarea {
   }
 
 /*responsive*/
-@media (max-width: 425px){
+@media (max-width: 1000px){
   .titulo{
     font-size: 1.3em;
   }
@@ -500,7 +586,6 @@ textarea {
 }
 
 .botonAdd,
-.atrasInicio,
 .boton,
 .atras{
   padding: 5px;
@@ -530,5 +615,71 @@ textarea {
 #iniciarForm label{
   font-size: 15px;
 }
+
+.filtros{
+  display: flex;
+  justify-content:center;
+  align-items: flex-end;
+  flex-direction: column;
+  font-size: 15px;
+}
+
+.botonesFiltros{
+  display: flex;
+  margin-right: 2%;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  margin-bottom: 30px;
+}
+
+.atrasInicio, #searchField {
+  max-width: 100%; 
+  font-size: 0.8em; 
+  padding: 5px;
+}
+
+nav{
+  top: 11%;
+}
+
+header{
+  margin-bottom: 60px;
+}
+
+.advertencia{
+  font-size: 12px;
+}
+
+.formularioActualizarSource,
+.formularioAgregarSource{
+  width: 60%;
+  top: 10%;
+  margin-bottom: 60px;
+  font-size: 12px;
+}
+
+#agregarCampos label{
+  color: white;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#agregarCampos input,
+#agregarCampos select,
+textarea {
+  border-radius: 16px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid white;
+  color: white;
+  padding-left: 5px;
+  width: 60%;
+}
+
+#agregarCampos select option {
+  padding: 5px; 
+  background-color: #161616;
+}
+
 
 }

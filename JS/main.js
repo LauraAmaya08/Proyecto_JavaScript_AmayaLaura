@@ -322,80 +322,71 @@ const eliminarSource = async () => {
 
 const actualizarSource = async () => {
     const usuarioId = localStorage.getItem("UsuarioId");
-    const oscurecer = document.querySelector(".oscurecer")
-    const formulario = document.querySelector(".formularioActualizarSource")
-    const quitar = document.getElementById("cancelarActual")
-    console.log(quitar)
-    FechaMaxima("fechaRecursoActualiza")
-    try {
-        const botonesActualizar = document.querySelectorAll(".actualizar");
+    const oscurecer = document.querySelector(".oscurecer");
+    const formulario = document.querySelector(".formularioActualizarSource");
+    const quitar = document.getElementById("cancelarActual");
 
-        botonesActualizar.forEach(boton => {
-            boton.addEventListener("click", async (event) => {
-                event.preventDefault();
-                const idRecurso = event.target.closest("button").getAttribute("data-id");
-                try {
-                    formulario.style.display = "block"
-                    formulario.classList.remove("oculto")
-                    oscurecer.classList.add("activo")
+    FechaMaxima("fechaRecursoActualiza");
 
+    const botonesActualizar = document.querySelectorAll(".actualizar");
+    botonesActualizar.forEach(boton => {
+        boton.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const idRecurso = event.target.closest("button").getAttribute("data-id");
+            
+            try {
+                formulario.style.display = "block";
+                formulario.classList.remove("oculto");
+                oscurecer.classList.add("activo");
 
-                    const data = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${usuarioId}`)
-                    const respuesta = await data.json()
-                    const recursos = respuesta.sources
-                    const recursoObtenido = recursos.find(src => src.id == idRecurso)
-                    console.log(recursoObtenido)
-
-                    llenarFormulario(recursoObtenido);
-
-                    document.getElementById('guardarActual').addEventListener('click', async () => {
-                        const datosActualizados = obtenerDatosFormulario()
-                        try {
-                            const actualizacionSubir = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${usuarioId}`, {
-                                method: "PUT",
-                                headers: {
-                                    "Content-Type": "application/json"
-                                },
-                                body: JSON.stringify({
-                                    ...respuesta,
-                                    sources: recursos.map(src => src.id === idRecurso ? { ...src, ...datosActualizados } : src)
-                                })
-                            })
-                            if (!actualizacionSubir.ok) {
-                                throw new Error("Error al actualizar el recurso");
-                            }
-                            cargarSources()
-                            formulario.classList.add("oculto");
-                            setTimeout(() => {
-                                formulario.style.display = "none";
-                                oscurecer.classList.remove("activo");
-                            }, 500);
-                            limpiarFormulario();
-                        } catch (error) {
-                            console.error('Error al actualizar el recurso:', error.message);
-                        }
-                    })
-
-                    
-                } catch (error) {
-                    console.error("Error al obtener el recurso:", error.message);
-                }
+                const data = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${usuarioId}`);
+                const respuesta = await data.json();
+                const recursoObtenido = respuesta.sources.find(src => src.id === idRecurso);
                 
-            });
-        })
-        quitar.addEventListener("click", () => {
-            formulario.classList.add("oculto");
-            setTimeout(() => {
-                formulario.style.display = "none";
-                oscurecer.classList.remove("activo");
-            }, 500);
-            limpiarFormulario();
+                llenarFormulario(recursoObtenido);
+
+                document.getElementById('guardarActual').addEventListener('click', async () => {
+                    const datosActualizados = obtenerDatosFormulario();
+
+                    const actualizacionSubir = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${usuarioId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            ...respuesta,
+                            sources: respuesta.sources.map(src => src.id === idRecurso ? { ...src, ...datosActualizados } : src)
+                        })
+                    });
+
+                    if (!actualizacionSubir.ok) {
+                        throw new Error("Error al actualizar el recurso");
+                    }
+
+                    setTimeout(() => {
+                        formulario.style.display = "none";
+                        formulario.classList.add("oculto");
+                        oscurecer.classList.remove("activo");
+                    }, 500);
+
+                    cargarSources(); 
+                });
+            } catch (error) {
+                console.error("Error al actualizar el recurso:", error.message);
+            }
         });
-        
-    } catch (error) {
-        console.error("Error en actualizarSource:", error.message);
-    }
+    });
+
+    quitar.addEventListener("click", () => {
+        limpiarFormulario();
+        setTimeout(() => {
+            formulario.style.display = "none";
+            formulario.classList.add("oculto");
+        oscurecer.classList.remove("activo");
+        }, 500);
+    });
 };
+
 
 const buscador = async () => {
     const usuarioId = localStorage.getItem("UsuarioId")
@@ -425,7 +416,7 @@ const mostrarResultados = (resultados) => {
         recursosFiltrado.innerHTML = '';
     
         if (resultados.length === 0) {
-            recursosFiltrado.innerHTML = '<p>No se encontraron resultados.</p>';
+            recursosFiltrado.innerHTML = '<p class= "respuesta">No se encontraron resultados.</p>';
             return;
         }
     
@@ -447,17 +438,8 @@ const mostrarResultados = (resultados) => {
                 </div>
             `;
             recursosFiltrado.appendChild(item);
-            });
-            document.querySelectorAll('.eliminar').forEach(boton => {
-                boton.addEventListener('click', () => {
-                    eliminarSource();  
-                });
-            });
-        
-            document.querySelectorAll('.actualizar').forEach(boton => {
-                boton.addEventListener('click', async () => {
-                    actualizarSource(); 
-                });
+            eliminarSource()
+            actualizarSource()
             });
 }
 
@@ -495,12 +477,10 @@ const filtros = async () => {
     };
 
     const restablecerFiltros = () => {
-        // Restablecer los valores de los filtros
         estadoFiltro.value = '';
         formatoFiltro.value = '';
         plataformaFiltro.value = '';
 
-        // Mostrar todos los resultados
         mostrarResultados(recursos);
     };
 
