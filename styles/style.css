@@ -402,20 +402,27 @@ textarea {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    min-height: 350px;
   }
   .recurso span{
     color: red;
   }
 
   .recursos{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns:  repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     margin: 2%;
     animation: fadeInTop 2s ease forwards;
     margin-bottom: 30px;
+  }
+
+  .bienvenida{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    margin-bottom: 10px;
   }
 
   #nombreSource{

@@ -108,8 +108,8 @@ const limpiarFormulario = () => {
     document.getElementById("resena").value = "";
 };
 
-const FechaMaxima = () => {
-    const fechaInput = document.getElementById("fechaRecurso");
+const FechaMaxima = (elemento) => {
+    const fechaInput = document.getElementById(elemento);
     const hoy = new Date().toISOString().split('T')[0];
     fechaInput.setAttribute("max", hoy);
 }
@@ -145,7 +145,7 @@ const agregarSource = async () => {
     const oscurecer = document.querySelector(".oscurecer")
     const formulario = document.querySelector(".formularioAgregarSource")
     const quitar = document.getElementById("cancelar")
-    FechaMaxima()
+    FechaMaxima("fechaRecurso")
     try {
         const respuesta = await fetch("https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources")
         if (respuesta.ok) {
@@ -218,6 +218,7 @@ const agregarSource = async () => {
                 setTimeout(() => {
                     formulario.style.display = "none";
                 }, 500)
+                limpiarFormulario()
                 cargarSources()
         }})
         quitar.addEventListener("click",()=>{
@@ -323,7 +324,7 @@ const actualizarSource = async () => {
     const formulario = document.querySelector(".formularioActualizarSource")
     const quitar = document.getElementById("cancelarActual")
     console.log(quitar)
-    FechaMaxima()
+    FechaMaxima("fechaRecursoActualiza")
     try {
         const botonesActualizar = document.querySelectorAll(".actualizar");
 

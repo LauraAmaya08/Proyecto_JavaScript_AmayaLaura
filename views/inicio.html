@@ -24,11 +24,20 @@
         elementos y personalizar tu experiencia. ¡Fácil y divertido!
       </p>
     </section>
-    <button class="botonAdd">
-      <img src="../assets/agregar.svg" alt="Agregar " />Recurso
-    </button>
-    <a href="index.html" class="atrasInicio"><img src="../assets/inicio.svg" alt="icono">Volver al inicio</a>
+    <section class="opcContainer">
+      <button class="botonAdd">
+        <img src="../assets/agregar.svg" alt="Agregar " />Recurso
+      </button>
+      <a href="index.html" class="atrasInicio"><img src="../assets/inicio.svg" alt="icono">Volver al inicio</a>
+      <nav>
+        <div class="form-group">
+        <input type="text" id="searchField" name="query" placeholder="Introduce el término de búsqueda" required>
+        </div>
+        <button><img src="../assets/search.svg" alt="Search.."></button>
+      </nav>
+    </section>
     <h1 class="tusRecursos">Tus Recursos</h1>
+
     <section class="formularioAgregarSource">
       <h1 class="tituloForm">¡Hora de agregar!</h1>
       <form id="agregarCampos">
@@ -245,7 +254,9 @@
     </section>
     <div class="oscurecer"></div>
     <section class="filtrar"></section>
-    <ul class="recursos"></ul>
+    <section class="recursosContainer">
+      <ul class="recursos"></ul>
+    </section>
     <script src="../JS/main.js"></script>
   </body>
 </html>
