@@ -10,8 +10,9 @@ Progresso es una aplicación web diseñada para ofrecerte una experiencia intera
 
 ## Tabla de Contenidos
 - [Características Principales](#características)
-- [Tecnologías Utilizadas](#Tecnologìas)
+- [Tecnologías Utilizadas](#tecnologías)
 - [Instalación](#instalación)
+- [Interfaz](#interfaz)
 - [Estructura](#estructura)
 - [Contacto](#contacto)
 
@@ -34,6 +35,11 @@ Progresso es una aplicación web diseñada para ofrecerte una experiencia intera
    ```bash
    git clone https://github.com/LauraAmaya08/Proyecto_JavaScript_AmayaLaura
 2. Dirigete a la carpeta **views** y abre el archivo principal **index.html** en tu navegador para empezar la experiencia.
+
+## Interfaz
+  <p align="center" style="background-color: black">
+  <img src="Images/Black and orange Startup Project modern presentation.png" alt="Mapa interfaz" width="700" />
+</p>
 
 ## Estructura
    ```bash
