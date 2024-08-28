@@ -114,6 +114,31 @@ const FechaMaxima = () => {
     fechaInput.setAttribute("max", hoy);
 }
 
+const llenarFormulario = (recurso) => {
+    console.log(recurso.calificacion)
+    document.querySelector('#nombreRecursoActualiza').value = recurso.nombre 
+    document.querySelector('#generoRecursoActualiza').value = recurso.genero 
+    document.querySelector('#plataformaRecursoActualiza').value = recurso.plataforma 
+    document.querySelector('#estadoRecursoActualiza').value = recurso.estado 
+    document.querySelector('#formatoRecursoActualiza').value = recurso.formato 
+    document.querySelector('#fechaRecursoActualiza').value = recurso.fecha 
+    document.querySelector('#calificacionRecursoActualiza').value = recurso.calificacion
+    document.querySelector('#resenaActualiza').value = recurso.resena
+};
+
+const obtenerDatosFormulario = () => {
+    return {
+        nombre: document.querySelector('#nombreRecursoActualiza').value,
+        genero: document.querySelector('#generoRecursoActualiza').value,
+        plataforma: document.querySelector('#plataformaRecursoActualiza').value,
+        estado: document.querySelector('#estadoRecursoActualiza').value,
+        formato: document.querySelector('#formatoRecursoActualiza').value,
+        fecha: document.querySelector('#fechaRecursoActualiza').value,
+        calificacion: document.querySelector('#calificacionRecursoActualiza').value,
+        resena: document.querySelector('#resenaActualiza').value
+    };
+};
+
 const agregarSource = async () => {
     const boton = document.querySelector(".botonAdd")
     const user = localStorage.getItem("UsuarioId")
@@ -133,7 +158,7 @@ const agregarSource = async () => {
         const guardar = document.getElementById("guardar")
         guardar.addEventListener("click", async() =>{
             const nombre = document.getElementById("nombreRecurso").value
-            const genero = Array.from(document.getElementById("generoRecurso").selectedOptions).map(option => option.value)
+            const genero = document.getElementById("generoRecurso").value
             const plataforma = document.getElementById("plataformaRecurso").value
             const estado = document.getElementById("estadoRecurso").value
             const formato = document.getElementById("formatoRecurso").value
@@ -187,7 +212,6 @@ const agregarSource = async () => {
                 let idsRecursos = JSON.parse(localStorage.getItem("idsRecursos")) || [];
                 idsRecursos.push(source.id);
                 localStorage.setItem("idsRecursos", JSON.stringify(idsRecursos));
-                limpiarFormulario()
                 formulario.classList.add("oculto");
                 oscurecer.classList.remove("activo");
 
@@ -222,7 +246,7 @@ const cargarSources = async () =>{
         recursos.innerHTML = '';
         console.log(sourcesUser)
         sourcesUser.forEach(source => {
-            const generos = source.genero.join(" ,");
+            const generos = source.genero;
             const info = `<li class= "recurso" data-id="${source.id}">
             <h2 id = "nombreSource">${source.nombre}</h2>
             <p id = "genero"><span>Géneros: </span>${generos}</p>
@@ -234,12 +258,13 @@ const cargarSources = async () =>{
             <p id = "resena"><span>Reseña: </span>${source.resena}</p>
             <div class="btn">
             <button class = "eliminar" data-id="${source.id}"><img src= "../assets/eliminar.svg" alt= "eliminar"></button>
-            <button id = "actualizar"><img src= "../assets/actualizar.svg" alt= "actualizar"></button>
+            <button class = "actualizar" data-id="${source.id}"><img src= "../assets/actualizar.svg" alt= "actualizar"></button>
             </div>
             </li>`
             recursos.innerHTML+= info
         });
         eliminarSource()
+        actualizarSource()
     } catch (error) {
         console.error(error)
     }
@@ -289,5 +314,82 @@ const eliminarSource = async () => {
         });
     } catch (error) {
         console.error("Error en eliminarSource:", error.message);
+    }
+};
+
+const actualizarSource = async () => {
+    const usuarioId = localStorage.getItem("UsuarioId");
+    const oscurecer = document.querySelector(".oscurecer")
+    const formulario = document.querySelector(".formularioActualizarSource")
+    const quitar = document.getElementById("cancelarActual")
+    console.log(quitar)
+    FechaMaxima()
+    try {
+        const botonesActualizar = document.querySelectorAll(".actualizar");
+
+        botonesActualizar.forEach(boton => {
+            boton.addEventListener("click", async (event) => {
+                event.preventDefault();
+                const idRecurso = event.target.closest("button").getAttribute("data-id");
+                try {
+                    formulario.style.display = "block"
+                    formulario.classList.remove("oculto")
+                    oscurecer.classList.add("activo")
+
+
+                    const data = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${usuarioId}`)
+                    const respuesta = await data.json()
+                    const recursos = respuesta.sources
+                    const recursoObtenido = recursos.find(src => src.id == idRecurso)
+                    console.log(recursoObtenido)
+
+                    llenarFormulario(recursoObtenido);
+
+                    document.getElementById('guardarActual').addEventListener('click', async () => {
+                        const datosActualizados = obtenerDatosFormulario()
+                        try {
+                            const actualizacionSubir = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${usuarioId}`, {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    ...respuesta,
+                                    sources: recursos.map(src => src.id === idRecurso ? { ...src, ...datosActualizados } : src)
+                                })
+                            })
+                            if (!actualizacionSubir.ok) {
+                                throw new Error("Error al actualizar el recurso");
+                            }
+                            cargarSources()
+                            formulario.classList.add("oculto");
+                            setTimeout(() => {
+                                formulario.style.display = "none";
+                                oscurecer.classList.remove("activo");
+                            }, 500);
+                            limpiarFormulario();
+                        } catch (error) {
+                            console.error('Error al actualizar el recurso:', error.message);
+                        }
+                    })
+
+                    
+                } catch (error) {
+                    console.error("Error al obtener el recurso:", error.message);
+                }
+                
+            });
+        })
+        quitar.addEventListener("click", () => {
+            formulario.classList.add("oculto");
+            setTimeout(() => {
+                formulario.style.display = "none";
+                oscurecer.classList.remove("activo");
+            }, 500);
+            limpiarFormulario();
+        });
+        
+    } catch (error) {
+        console.error("Error en actualizarSource:", error.message);
     }
 };

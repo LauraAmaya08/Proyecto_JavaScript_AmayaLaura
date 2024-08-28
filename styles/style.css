@@ -105,7 +105,9 @@ header{
 .botonAdd:hover,
 #guardar:hover,
 #cancelar:hover,
-.atrasInicio:hover{
+.atrasInicio:hover,
+#cancelarActual:hover,
+#guardarActual:hover{
   scale: 1.1;
   background-color: red;
   cursor: pointer;
@@ -254,7 +256,8 @@ body{
 
 /*formulario*/
 
-.formularioAgregarSource{
+.formularioAgregarSource,
+.formularioActualizarSource{
   display: none;
   position: fixed;
   width: 50%;
@@ -271,6 +274,7 @@ body{
   animation: fadeInTop 2s ease forwards;
 }
 
+.formularioAgregarSource.oculto,
 .formularioAgregarSource.oculto {
   opacity: 0;
   transform: scale(0.95);
@@ -371,7 +375,9 @@ textarea {
   }
 
   #guardar,
-  #cancelar{
+  #cancelar,
+  #cancelarActual,
+  #guardarActual{
     background-color: #161616;
     border-radius: 16px;
     border: 1px solid white;
@@ -418,7 +424,7 @@ textarea {
   }
 
   .eliminar,
-  #actualizar{
+  .actualizar{
     background-color: #161616;
     border-radius: 8px;
     border: none;

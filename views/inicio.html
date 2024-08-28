@@ -162,6 +162,87 @@
         <button id="cancelar">Cancelar</button>
       </div>
     </section>
+
+
+    <section class="formularioActualizarSource">
+      <h1 class="tituloForm">¡Actualiza tu recurso!</h1>
+      <p class="advertencia">Estos son los datos de tu recurso actuales, cambia los que desees (si no los editas mantendrán su valor)</p>
+      <form id="agregarCampos">
+        <label for="nombre">Nombre: </label>
+        <input type="text" id="nombreRecursoActualiza" name="nombre" required />
+        <br /><br />
+        <label for="genero">Género: </label>
+        <select name="genero" id="generoRecursoActualiza" required>
+          <option value="Acción">Acción</option>
+          <option value="Aventura">Aventura</option>
+          <option value="Comedia">Comedia</option>
+          <option value="Drama">Drama</option>
+          <option value="Terror">Terror</option>
+          <option value="Romance">Romance</option>
+          <option value="Ciencia Ficción">Ciencia Ficción</option>
+          <option value="Biografía">Biografía</option>
+          <option value="Misterio">Misterio</option>
+          <option value="Musical">Musical</option>
+        </select>
+        <br /><br />
+        <label for="plataforma">Plataforma: </label>
+        <select name="plataforma" id="plataformaRecursoActualiza" required>
+          <option value="Netflix">Netflix</option>
+          <option value="Disney+">Disney+</option>
+          <option value="Amazon">Amazon</option>
+          <option value="HBO max">HBO max</option>
+          <option value="Crunchyroll">Crunchyroll</option>
+          <option value="Wattpad">Wattpad</option>
+          <option value="Google Libros">Google Play Libros</option>
+        </select>
+        <br /><br />
+        <label for="estado">Estado: </label>
+        <select name="estado" id="estadoRecursoActualiza" required>
+          <option value="Terminado">Terminado</option>
+          <option value="Progreso">En Progreso</option>
+          <option value="Pendiente">Pediente</option>
+          <option value="Pausado">En Pausa</option>
+          <option value="En espera">En Espera</option>
+        </select>
+        <br /><br />
+        <label for="formato">Formato: </label>
+        <select name="formato" id="formatoRecursoActualiza" required>
+          <option value="Libro">Libro</option>
+          <option value="Película">Película</option>
+          <option value="Serie">Serie de TV</option>
+        </select>
+        <br /><br />
+        <label for="fecha">Terminado en: </label>
+        <input type="date" id="fechaRecursoActualiza" name="fecha" />
+        <br /><br />
+        <section class="Calificacion">
+          <label for="calificacion">Calificación: </label>
+          <select name="calificacion" id="calificacionRecursoActualiza" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </section>
+        <section class="opinion">
+          <label for="resena">Reseña:</label>
+          <textarea
+            id="resenaActualiza"
+            name="resena"
+            rows="5"
+            cols="40"
+            placeholder="Escribe tu reseña aquí..."
+            required
+          ></textarea>
+          <br /><br />
+        </section>
+      </form>
+      <div class="btn">
+        <button id="guardarActual">¡Guardar!</button>
+        <button id="cancelarActual">Cancelar</button>
+      </div>
+    </section>
     <div class="oscurecer"></div>
     <section class="filtrar"></section>
     <ul class="recursos"></ul>
