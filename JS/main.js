@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarSaludo()
     cargarSources()
     eliminarSource()
+    buscador()
 })
 
 const generarIdUnicoSources = () => {
@@ -394,3 +395,69 @@ const actualizarSource = async () => {
         console.error("Error en actualizarSource:", error.message);
     }
 };
+
+const buscador = async () => {
+    const usuarioId = localStorage.getItem("UsuarioId")
+    document.querySelector(".buscar").addEventListener("click", async() => {
+        let search = document.getElementById("searchField").value;
+        try {
+            const obtenerUsuario = await fetch(`https://66c822da732bf1b79fa84d56.mockapi.io/api/v1/resources/${usuarioId}`)
+            if (!obtenerUsuario.ok) throw new Error('Error en la búsqueda');
+
+            const data = await obtenerUsuario.json();
+            const recursos = data.sources;
+            console.log(recursos)
+
+            const resultados = recursos.filter(recurso =>
+                recurso.nombre.includes(search)
+            );
+
+            mostrarResultados(resultados)
+        }catch(error){
+            console.error(error);
+    }
+})
+}
+
+const mostrarResultados = (resultados) => {
+        const recursosFiltrado = document.querySelector(".recursos");
+        recursosFiltrado.innerHTML = '';
+    
+        if (resultados.length === 0) {
+            recursosFiltrado.innerHTML = '<p>No se encontraron resultados.</p>';
+            return;
+        }
+    
+        resultados.forEach(async recurso => {
+            const item = document.createElement('div');
+            item.className = 'recurso'; // Agrega una clase para aplicar estilos si es necesario
+            item.innerHTML = `
+                <h2 id = "nombreSource">${recurso.nombre}</h2>
+                <p id = "genero"><span>Géneros: </span>${recurso.genero}</p>
+                <p id = "plataforma"><span>Plataforma: </span>${recurso.plataforma}</p>
+                <p id = "estado"><span>Estado: </span>${recurso.estado}</p>
+                <p id = "fecha"><span>Finalización: </span>${recurso.fecha}</p>
+                <p id = "formato"><span>Formato: </span>${recurso.formato}</p>
+                <p id = "resena"><span>Reseña: </span>${recurso.resena}</p>
+                <p id = "calificacion"><span>Calificación: </span>${recurso.calificacion} estrellas</p>
+                <div class="btn">
+                <button class = "eliminar" data-id="${recurso.id}"><img src= "../assets/eliminar.svg" alt= "eliminar"></button>
+                <button class = "actualizar" data-id="${recurso.id}"><img src= "../assets/actualizar.svg" alt= "actualizar"></button>
+                </div>
+            `;
+            recursosFiltrado.appendChild(item);
+            });
+            document.querySelectorAll('.eliminar').forEach(boton => {
+                boton.addEventListener('click', () => {
+                    eliminarSource();  
+                });
+            });
+        
+            document.querySelectorAll('.actualizar').forEach(boton => {
+                boton.addEventListener('click', async () => {
+                    actualizarSource(); 
+                });
+            });
+}
+
+

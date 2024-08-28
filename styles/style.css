@@ -197,7 +197,8 @@ body{
   padding-left: 3%;
 }
 
-.botonAdd{
+.botonAdd,
+#searchField{
   margin-left: 3%;
   margin-top: 1%;
   padding: 10px;
@@ -252,6 +253,35 @@ body{
 .oscurecer.activo {
   display: block;
   opacity: 1;
+}
+
+.opcContainer{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 10px;
+  margin: 30px;
+}
+
+.recursosContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+}
+
+.buscar{
+  background-color: transparent;
+  border: none;
+  margin-left: 9px;
+}
+
+nav{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row;
 }
 
 /*formulario*/
@@ -415,6 +445,7 @@ textarea {
     margin: 2%;
     animation: fadeInTop 2s ease forwards;
     margin-bottom: 30px;
+    width: 100vw;
   }
 
   .bienvenida{
